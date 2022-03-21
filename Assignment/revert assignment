@@ -1,0 +1,110 @@
+import React from 'react';
+import './Table.css';
+
+export class ShowAllEvents extends React.Component {
+
+
+    constructor(props) {
+       super(props)
+       this.state = {
+            events: []
+       }
+    }
+
+    componentWillMount() {
+      const url = "https://jsonplaceholder.typicode.com/posts" ;
+      fetch(url)
+      .then(response => response.json())
+      .then(content => content) 
+      .then(events => {
+         console.log(events)
+         this.setState(events)
+      })
+  
+      .then(console.log(this.state.events))
+    }
+
+ 
+    renderTableHeader() {
+       let header = Object.keys(this.state.events[0])
+       return header.map((key, index) => {
+          return <th key={index}>{key.toUpperCase()}</th>
+       })
+    }
+ 
+    renderTableData() {
+       return this.state.events.map((events, index) => {
+          const {date, distance, email, location, name, pace, time } = events //destructuring
+          return (
+             <tr key={name}>
+                <td>{name}</td>
+                <td>{location}</td>
+                <td>{date}</td>
+                <td>{time}</td>
+                <td>{distance}</td>
+                <td>{pace}</td>
+                <td>{email}</td>
+             </tr>
+          )
+       })
+    }
+ 
+    render() {
+       return (
+          <div>
+             <h1 id='title'>All Upcomming Events</h1>
+             <table id='events'>
+                <tbody>
+                   <tr>{this.renderTableHeader()}</tr>
+                   {this.renderTableData()}
+                </tbody>
+             </table>
+          </div>
+       )
+    }
+ }
+ 
+ 
+ 
+ 
+ Here is the DeleteUser :
+
+const Container = styled.div``;
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const handleDeleteUser = (id) => {
+  axios
+    .delete(` https://jsonplaceholder.typicode.com/posts/${id}`, {
+      headers: {
+        Authorization:
+          "Bearer my token goes here",
+      },
+    })
+    .then((response) => console.log(response));
+};
+
+const DeleteUser = ({ open, onClose, userID }) => {
+  return (
+    <Container>
+      <Modal open={open} onClose={onClose}>
+        <Box sx={style}>
+          <h1>tets</h1>
+          <button onClick={() => handleDeleteUser(userID)}>Delete</button>
+        </Box>
+      </Modal>
+    </Container>
+  );
+};
+
+export default DeleteUser;
